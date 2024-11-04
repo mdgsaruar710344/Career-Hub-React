@@ -1,37 +1,68 @@
 import { useLoaderData, useParams } from "react-router-dom";
 import { getStoredApplication, saveToLocalStorage } from "../../Utilities/localStorage";
 import { ToastContainer,toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 
 const JobDetails = () => {
   const jobs=useLoaderData();
   const {jobId}=useParams();
   const idInt=parseInt(jobId)
+
+//new code
+  const[isLoading,setisLoading]=useState(true);
+
   const notify = () => toast("Applied Successfully!");
   const notify1 = () => toast("Already Applied");
 
+ 
+  console.log(jobs);
+  
+
+  const matchedJob= jobs.find(job=>job.id==idInt);
+
+  //new code is here
+  useEffect(()=>{
+    if(jobs.length>0){
+      setisLoading(false);
+    }
+  },[jobs])
+
+
+  const  handleApplyJobs =(id)=>{
+    const savedIDs= getStoredApplication();
+
+    if(savedIDs.includes(id)){
+     notify1();
+    }
+    else{
+     saveToLocalStorage(id);
+     notify();
+    }
+   
+   //console.log(id);
+}
+
+
+
+  if(isLoading){
+    return (
+      <div>data  is Loading</div>
+    )
+  }
+
+ if (!matchedJob) {
+        return <div>Job not found</div>;
+    }
  // console.log(jobId);
-  const matchedJob=jobs.find(job=>job.id==idInt);
+
 //console.log(matchedJob); 
   const {id,job_description,company_name,job_title}=matchedJob;
-  console.log(id);
+ // console.log(id);
 
 
 
- const  handleApplyJobs =(id)=>{
-     const savedIDs= getStoredApplication();
 
-     if(savedIDs.includes(id)){
-      notify1();
-     }
-     else{
-      saveToLocalStorage(id);
-      notify();
-     }
-    
-    console.log(id);
- }
- 
 
 
   return (
