@@ -5,6 +5,10 @@ import AppliedJob from "../AppliedJob/AppliedJob";
 const AppliedJobs = () => {
 
   const [appliedjobs, setAppliedJobs] = useState([]);
+ const [remote,setRemote]= useState([]);
+ const [onsite,setOnsite]= useState([]);
+ const[jobtype,setJobType]=useState('all')
+
 
 
   useEffect(() => {
@@ -31,6 +35,29 @@ const AppliedJobs = () => {
   }, []);
 
 
+const   handleRemoteJobs=()=>{
+  const remoteJobs= appliedjobs.filter(job=>job.remote_or_onsite==="Remote");
+  setRemote(remoteJobs);
+  setJobType('remote');
+  console.log('clicked remote')
+}
+
+const   handleAllJobs=()=>{
+  setJobType('all');
+  console.log('clicked all')
+}
+
+const   handleOnSiteJobs=()=>{
+  const onsiteJobs= appliedjobs.filter(job=>job.remote_or_onsite==="Onsite")
+  setOnsite(onsiteJobs);
+  setJobType('onsite');
+  console.log('clicked onsite')
+}
+
+console.log(jobtype);
+
+
+// const allJobs= appliedjobs.filter(job=>job.remote_or_onsite==="Onsite")
 
 
   return (
@@ -40,13 +67,15 @@ const AppliedJobs = () => {
         <details className="dropdown">
           <summary className="btn m-1">Filter</summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-            <li><a>All</a></li>
-            <li><a>Remote</a></li>
-            <li><a>Onsite</a></li>
+            <li><button onClick={handleAllJobs}>All</button></li>
+            <li><button onClick={handleRemoteJobs}>Remote</button></li>
+            <li><button onClick={handleOnSiteJobs}>Onsite</button></li>
           </ul>
         </details>
       </div>
-      {appliedjobs ? appliedjobs.map(job => <AppliedJob key={job.id} job={job}></AppliedJob>) : 'No jobs'}
+      {jobtype==='remote' ? remote.map(job => <AppliedJob key={job.id} job={job}></AppliedJob>) :''}
+      {jobtype==='onsite' ? onsite.map(job => <AppliedJob key={job.id} job={job}></AppliedJob>) :''}
+      {jobtype==='all' ? appliedjobs.map(job => <AppliedJob key={job.id} job={job}></AppliedJob>) :''}
     </div>
   );
 };
