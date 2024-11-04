@@ -1,10 +1,11 @@
-import { useLoaderData } from "react-router-dom";
 import Job from "../Job/Job";
 import { useEffect, useState } from "react";
 
 
 const FeaturedJobs = () => {
-const[jobs,setJobs]=useState([])
+const[jobs,setJobs]=useState([]);
+const [displayjobs,setDisplayJobs]=useState(4);
+const [showButton,setShowButton]=useState(true)
 
   useEffect(
     ()=>{
@@ -12,7 +13,18 @@ const[jobs,setJobs]=useState([])
       .then(res=>res.json())
       .then(data=>setJobs(data));
     }
-    ,[])
+    ,[]);
+
+const handleShowMore=()=>{
+  setDisplayJobs(jobs.length);
+  console.log(displayjobs);
+  setShowButton(false);
+}
+// console.log(displayjobs)
+    // if(jobs.length>0){
+    //   const newArray=jobs.slice(0,4);
+    //   setDisplayJobs(newArray);
+    // }
 
 
   console.log(jobs.length);
@@ -23,9 +35,10 @@ const[jobs,setJobs]=useState([])
         Total Jobs:{jobs.length}
         <div className="grid-cols-2">
         {
-         jobs? jobs.map(job=><Job key={job.id} job={job}></Job>):''
+          jobs? jobs.slice(0,displayjobs).map(job=><Job key={job.id} job={job}></Job>):''
         }
-  
+        <br></br>
+        <button onClick={handleShowMore} className={`border-2 ${showButton?'':'hidden'} border-green-700 bg-red-700 text-white`}>Show More</button>
         </div>
       
       </div>

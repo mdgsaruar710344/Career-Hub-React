@@ -1,5 +1,5 @@
 import { useLoaderData, useParams } from "react-router-dom";
-import { saveToLocalStorage } from "../../Utilities/localStorage";
+import { getStoredApplication, saveToLocalStorage } from "../../Utilities/localStorage";
 import { ToastContainer,toast } from "react-toastify";
 
 
@@ -7,15 +7,28 @@ const JobDetails = () => {
   const jobs=useLoaderData();
   const {jobId}=useParams();
   const idInt=parseInt(jobId)
-  const notify = () => toast("Wow so easy !");
+  const notify = () => toast("Applied Successfully!");
+  const notify1 = () => toast("Already Applied");
 
  // console.log(jobId);
   const matchedJob=jobs.find(job=>job.id==idInt);
 //console.log(matchedJob); 
-  const {id,job_description,company_name,job_title,job_responsibility}=matchedJob;
+  const {id,job_description,company_name,job_title}=matchedJob;
   console.log(id);
+
+
+
  const  handleApplyJobs =(id)=>{
-    saveToLocalStorage(id);
+     const savedIDs= getStoredApplication();
+
+     if(savedIDs.includes(id)){
+      notify1();
+     }
+     else{
+      saveToLocalStorage(id);
+      notify();
+     }
+    
     console.log(id);
  }
  
@@ -33,7 +46,7 @@ const JobDetails = () => {
           <br></br>
         Job Description:{job_description}
         <br></br>
-        <button onClick={()=>{handleApplyJobs(id);notify();}} className="bg-blue-700" >Apply Now</button>
+        <button onClick={()=>{handleApplyJobs(id)}} className="bg-blue-700" >Apply Now</button>
 
       </div>
       <ToastContainer />
