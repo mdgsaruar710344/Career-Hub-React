@@ -8,7 +8,7 @@ const ErrorElement = () => {
     <div>
       <h1>Oops! Page not found</h1>
       <br></br>
-      <Link to="/" className="b-4 text-2xl border-blue-700"> Go Back Home</Link>
+      <Link to="/" className="b-4 text-2xl bg-red-700 text-white rounded border-green-700"> Go Back Home</Link>
     </div>
   );
 };

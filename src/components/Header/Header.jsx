@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
 
   const navMenu= <>
-            <li><Link to="/"> Home</Link></li>
-            <li><Link to="/applied"> Applied Jobs</Link></li>
-            <li><Link to="/blog"> Blog</Link></li>
+            <li><NavLink to="/"> Home</NavLink></li>
+            <li><NavLink to="/applied"> Applied Jobs</NavLink></li>
+            <li><NavLink to="/blog"> Blog</NavLink></li>
       
   
   
